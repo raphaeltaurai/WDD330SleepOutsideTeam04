@@ -1,9 +1,28 @@
-import { getLocalStorage } from './utils.mjs';
+import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 
 function renderCartContents() {
-  const cartItems = getLocalStorage('so-cart');
+  const cartItems = getLocalStorage("so-cart") || [];
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
-  document.querySelector('.product-list').innerHTML = htmlItems.join("");
+  document.querySelector(".product-list").innerHTML = htmlItems.join("");
+
+  // Attach event listeners to all remove buttons
+  document.querySelectorAll(".remove-item").forEach((btn) => {
+    btn.addEventListener("click", function (e) {
+      const id = this.getAttribute("data-id");
+      removeCartItem(id);
+    });
+  });
+}
+
+function removeCartItem(id) {
+  let cartItems = getLocalStorage("so-cart") || [];
+  // Remove the first item with matching Id
+  const index = cartItems.findIndex((item) => String(item.Id) === String(id));
+  if (index !== -1) {
+    cartItems.splice(index, 1);
+    setLocalStorage("so-cart", cartItems);
+    renderCartContents();
+  }
 }
 
 function cartItemTemplate(item) {
