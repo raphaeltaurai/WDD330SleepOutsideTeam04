@@ -1,18 +1,17 @@
 import { renderListWithTemplate } from "./utils.mjs";
 
 function productCardTemplate(product) {
-  // Handle different image structures
+  // Handle different image structures for API data
   let imageSrc = "";
-  if (product.Image) {
-    // Tents and hammocks have simple Image field
-    // Extract the subfolder and filename from the path
+  if (product.Images && product.Images.PrimaryMedium) {
+    // Use PrimaryMedium for product lists
+    imageSrc = product.Images.PrimaryMedium;
+  } else if (product.Image) {
+    // Fallback for local data structure
     const pathParts = product.Image.split("/");
-    const subfolder = pathParts[pathParts.length - 2]; // tents or hammocks
-    const filename = pathParts[pathParts.length - 1]; // the actual filename
+    const subfolder = pathParts[pathParts.length - 2];
+    const filename = pathParts[pathParts.length - 1];
     imageSrc = `../images/${subfolder}/${filename}`;
-  } else if (product.Images && product.Images.PrimaryLarge) {
-    // Backpacks and sleeping-bags have Images.PrimaryLarge
-    imageSrc = product.Images.PrimaryLarge;
   }
 
   return `<li class="product-card">
@@ -33,7 +32,7 @@ export default class ProductList {
   }
 
   async init() {
-    const list = await this.dataSource.getData();
+    const list = await this.dataSource.getData(this.category);
     this.renderList(list);
   }
 

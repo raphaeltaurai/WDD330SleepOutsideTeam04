@@ -42,7 +42,17 @@ export default class ProductDetails {
     // Prepare product data
     const brand = this.product.Brand?.Name || "";
     const name = this.product.NameWithoutBrand || this.product.Name || "";
-    const image = this.product.Image || "";
+    
+    // Handle different image structures for API data
+    let image = "";
+    if (this.product.Images && this.product.Images.PrimaryLarge) {
+      // Use PrimaryLarge for product details
+      image = this.product.Images.PrimaryLarge;
+    } else if (this.product.Image) {
+      // Fallback for local data structure
+      image = this.product.Image.replace("../", "../");
+    }
+    
     const price = this.product.FinalPrice ? `$${this.product.FinalPrice.toFixed(2)}` : "";
     const color = this.product.Colors && this.product.Colors[0]?.ColorName ? this.product.Colors[0].ColorName : "";
     const description = this.product.DescriptionHtmlSimple || "";
@@ -54,7 +64,7 @@ export default class ProductDetails {
     section.innerHTML = `
       <h3>${brand}</h3>
       <h2 class="divider">${name}</h2>
-      <img class="divider" src="${image.replace("../", "../")}" alt="${name}" />
+      <img class="divider" src="${image}" alt="${name}" />
       <p class="product-card__price">${price}</p>
       <p class="product__color">${color}</p>
       <p class="product__description">${description}</p>

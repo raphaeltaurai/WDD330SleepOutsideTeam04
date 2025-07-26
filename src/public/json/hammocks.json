@@ -1,0 +1,90 @@
+[
+  {
+    "Id": "H001",
+    "NameWithoutBrand": "Double Nest Hammock",
+    "Name": "Eno Double Nest Hammock",
+    "Image": "../images/hammocks/eno-double-nest-hammock-navy-blue~p~h001_01~320.jpg",
+    "SizesAvailable": {},
+    "Colors": [
+      {
+        "ColorCode": "01",
+        "ColorName": "Navy Blue"
+      }
+    ],
+    "DescriptionHtmlSimple": "Perfect for two people or extra comfort for one, the ENO Double Nest hammock features a spacious design with triple-stitched seams and reinforced stress points for durability.",
+    "SuggestedRetailPrice": 69.95,
+    "Brand": {
+      "Id": "2001",
+      "LogoSrc": "../images/logos/eno-160x100.jpg",
+      "Name": "ENO"
+    },
+    "ListPrice": 59.99,
+    "FinalPrice": 59.99
+  },
+  {
+    "Id": "H002",
+    "NameWithoutBrand": "SingleNest Hammock",
+    "Name": "Eno SingleNest Hammock",
+    "Image": "../images/hammocks/eno-singlenest-hammock-forest-green~p~h002_01~320.jpg",
+    "SizesAvailable": {},
+    "Colors": [
+      {
+        "ColorCode": "01",
+        "ColorName": "Forest Green"
+      }
+    ],
+    "DescriptionHtmlSimple": "Lightweight and compact, the ENO SingleNest hammock is perfect for solo adventures. Features triple-stitched seams and reinforced stress points.",
+    "SuggestedRetailPrice": 59.95,
+    "Brand": {
+      "Id": "2001",
+      "LogoSrc": "../images/logos/eno-160x100.jpg",
+      "Name": "ENO"
+    },
+    "ListPrice": 49.99,
+    "FinalPrice": 49.99
+  },
+  {
+    "Id": "H003",
+    "NameWithoutBrand": "Grand Trunk Hammock",
+    "Name": "Grand Trunk Double Hammock",
+    "Image": "../images/hammocks/grand-trunk-double-hammock-red~p~h003_01~320.jpg",
+    "SizesAvailable": {},
+    "Colors": [
+      {
+        "ColorCode": "01",
+        "ColorName": "Red"
+      }
+    ],
+    "DescriptionHtmlSimple": "Made from 100% parachute nylon, this double hammock is lightweight, durable, and perfect for camping, hiking, or relaxing in your backyard.",
+    "SuggestedRetailPrice": 49.99,
+    "Brand": {
+      "Id": "2002",
+      "LogoSrc": "../images/logos/grand-trunk-160x100.jpg",
+      "Name": "Grand Trunk"
+    },
+    "ListPrice": 39.99,
+    "FinalPrice": 39.99
+  },
+  {
+    "Id": "H004",
+    "NameWithoutBrand": "Ultralight Hammock",
+    "Name": "Kammok Roo Ultralight Hammock",
+    "Image": "../images/hammocks/kammok-roo-ultralight-hammock-orange~p~h004_01~320.jpg",
+    "SizesAvailable": {},
+    "Colors": [
+      {
+        "ColorCode": "01",
+        "ColorName": "Orange"
+      }
+    ],
+    "DescriptionHtmlSimple": "Ultralight and packable, the Kammok Roo hammock is perfect for backpacking and hiking. Made from high-tenacity nylon for strength and durability.",
+    "SuggestedRetailPrice": 79.95,
+    "Brand": {
+      "Id": "2003",
+      "LogoSrc": "../images/logos/kammok-160x100.jpg",
+      "Name": "Kammok"
+    },
+    "ListPrice": 69.99,
+    "FinalPrice": 69.99
+  }
+] 
