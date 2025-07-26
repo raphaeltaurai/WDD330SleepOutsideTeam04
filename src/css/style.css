@@ -389,6 +389,315 @@ button {
   color: #fff;
 }
 
+/* Product Controls and Sorting */
+.product-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid var(--light-grey);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.sort-controls,
+.filter-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sort-controls label,
+.filter-controls label {
+  font-weight: 600;
+  color: var(--dark-grey);
+  white-space: nowrap;
+  font-size: 0.9rem;
+}
+
+.sort-dropdown,
+.filter-dropdown {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--light-grey);
+  border-radius: 4px;
+  background: white;
+  font-size: 0.9rem;
+  min-width: 150px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.sort-dropdown:hover,
+.filter-dropdown:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 2px 6px rgba(240, 168, 104, 0.2);
+}
+
+.sort-dropdown:focus,
+.filter-dropdown:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(240, 168, 104, 0.2);
+}
+
+.view-controls {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.view-btn {
+  padding: 0.5rem;
+  border: 1px solid var(--light-grey);
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.view-btn:hover {
+  background: #f0f0f0;
+  border-color: var(--primary-color);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.view-btn.active {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+  box-shadow: 0 2px 6px rgba(240, 168, 104, 0.3);
+}
+
+.product-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: var(--dark-grey);
+  border-left: 4px solid var(--primary-color);
+}
+
+#product-count {
+  font-weight: 600;
+  color: var(--secondary-color);
+}
+
+#active-filters {
+  color: var(--tertiary-color);
+  font-style: italic;
+  font-size: 0.85rem;
+}
+
+/* Product List Grid/List Views */
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  list-style: none;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.product-list.list-view {
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.product-list.list-view .product-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid var(--light-grey);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.product-list.list-view .product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary-color);
+}
+
+.product-list.list-view .product-card img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.product-list.list-view .product-card .card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.product-list.list-view .card__brand {
+  font-size: 0.9rem;
+  color: var(--tertiary-color);
+  margin: 0;
+  font-weight: 600;
+}
+
+.product-list.list-view .card__name {
+  font-size: 1.1rem;
+  margin: 0;
+  color: var(--dark-grey);
+  line-height: 1.3;
+}
+
+.product-list.list-view .product-card__price {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--secondary-color);
+  margin: 0;
+}
+
+/* Enhanced product card styling */
+.product-card {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.product-card img {
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover img {
+  transform: scale(1.05);
+}
+
+.product-size {
+  font-size: 0.85rem;
+  color: var(--tertiary-color);
+  background: #f8f9fa;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  display: inline-block;
+  margin: 0.25rem 0;
+  border: 1px solid #e9ecef;
+}
+
+.product-rating {
+  font-size: 0.9rem;
+  color: #ff6b35;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0.25rem 0;
+}
+
+.product-rating::before {
+  content: "★";
+  color: #ffd700;
+  font-size: 1rem;
+}
+
+/* Loading state */
+.product-list.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.product-list.loading::after {
+  content: "Loading products...";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.1rem;
+  color: var(--tertiary-color);
+  font-weight: 600;
+}
+
+/* Responsive Design for Controls */
+@media screen and (max-width: 768px) {
+  .product-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  
+  .sort-controls,
+  .filter-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .sort-controls label,
+  .filter-controls label {
+    margin-bottom: 0.25rem;
+  }
+  
+  .sort-dropdown,
+  .filter-dropdown {
+    width: 100%;
+  }
+  
+  .view-controls {
+    align-self: center;
+  }
+  
+  .product-stats {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .product-list.list-view .product-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .product-list.list-view .product-card img {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .product-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .product-controls {
+    padding: 0.75rem;
+  }
+  
+  .sort-dropdown,
+  .filter-dropdown {
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+}
+
 @media screen and (min-width: 500px) {
   body {
     max-width: 1400px;

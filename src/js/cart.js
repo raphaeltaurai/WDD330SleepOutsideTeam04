@@ -26,18 +26,33 @@ function removeCartItem(id) {
 }
 
 function cartItemTemplate(item) {
+  const color = item.Colors && item.Colors[0] ? item.Colors[0].ColorName : "";
+  
+  // Handle different image structures
+  let imageSrc = "";
+  if (item.Images && item.Images.PrimaryMedium) {
+    // Use PrimaryMedium for cart display
+    imageSrc = item.Images.PrimaryMedium;
+  } else if (item.Image) {
+    // Fallback for local data structure
+    const pathParts = item.Image.split("/");
+    const subfolder = pathParts[pathParts.length - 2];
+    const filename = pathParts[pathParts.length - 1];
+    imageSrc = `/images/${subfolder}/${filename}`;
+  }
+  
   const newItem = `<li class="cart-card divider">
   <span class="remove-item" data-id="${item.Id}" title="Remove item" style="cursor:pointer;position:absolute;right:10px;top:10px;font-weight:bold;font-size:1.2em;">&times;</span>
   <a href="#" class="cart-card__image">
     <img
-      src="${item.Image}"
+      src="${imageSrc}"
       alt="${item.Name}"
     />
   </a>
   <a href="#">
     <h2 class="card__name">${item.Name}</h2>
   </a>
-  <p class="cart-card__color">${item.Colors[0].ColorName}</p>
+  <p class="cart-card__color">${color}</p>
   <p class="cart-card__quantity">qty: 1</p>
   <p class="cart-card__price">$${item.FinalPrice}</p>
 </li>`;

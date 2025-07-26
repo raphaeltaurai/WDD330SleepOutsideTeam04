@@ -8,16 +8,36 @@ export default class ProductDetails {
   }
 
   async init() {
-    this.product = await this.dataSource.findProductById(this.productId);
-    this.renderProductDetails();
-    // Add event listener to Add to Cart button after rendering
-    const addToCartBtn = document.getElementById("addToCart");
-    if (addToCartBtn) {
-      addToCartBtn.addEventListener("click", this.addProductToCart.bind(this));
+    try {
+      this.product = await this.dataSource.findProductById(this.productId);
+      this.renderProductDetails();
+      // Add event listener to Add to Cart button after rendering
+      const addToCartBtn = document.getElementById("addToCart");
+      if (addToCartBtn) {
+        addToCartBtn.addEventListener("click", this.addProductToCart.bind(this));
+      }
+    } catch (error) {
+      console.error("Error loading product details:", error);
+      const productDetailSection = document.querySelector("#product-detail");
+      if (productDetailSection) {
+        productDetailSection.innerHTML = `
+          <div class="error-message">
+            <h3>Error Loading Product</h3>
+            <p>Sorry, we couldn't load the product details. Please try again later.</p>
+            <p>Error: ${error.message}</p>
+          </div>
+        `;
+      }
     }
   }
 
   addProductToCart() {
+    // Validate that we have a valid product before adding to cart
+    if (!this.product || !this.product.Id) {
+      alert("Error: Product information is not available. Please refresh the page and try again.");
+      return;
+    }
+    
     let cartItems = getLocalStorage("so-cart");
     if (!Array.isArray(cartItems)) {
       cartItems = [];
@@ -29,15 +49,12 @@ export default class ProductDetails {
   }
 
   renderProductDetails() {
-    // Find the main container or create a fallback
-    let main = document.querySelector("main");
-    if (!main) {
-      main = document.createElement("main");
-      document.body.appendChild(main);
+    // Find the existing product-detail section
+    const productDetailSection = document.querySelector("#product-detail");
+    if (!productDetailSection) {
+      console.error("Product detail section not found");
+      return;
     }
-    // Remove any previous product-detail section
-    const oldDetail = main.querySelector(".product-detail");
-    if (oldDetail) oldDetail.remove();
 
     // Prepare product data
     const brand = this.product.Brand?.Name || "";
@@ -49,8 +66,11 @@ export default class ProductDetails {
       // Use PrimaryLarge for product details
       image = this.product.Images.PrimaryLarge;
     } else if (this.product.Image) {
-      // Fallback for local data structure
-      image = this.product.Image.replace("../", "../");
+      // Fallback for local data structure - fix the path
+      const pathParts = this.product.Image.split("/");
+      const subfolder = pathParts[pathParts.length - 2];
+      const filename = pathParts[pathParts.length - 1];
+      image = `/images/${subfolder}/${filename}`;
     }
     
     const price = this.product.FinalPrice ? `$${this.product.FinalPrice.toFixed(2)}` : "";
@@ -58,10 +78,8 @@ export default class ProductDetails {
     const description = this.product.DescriptionHtmlSimple || "";
     const id = this.product.Id || "";
 
-    // Build HTML
-    const section = document.createElement("section");
-    section.className = "product-detail";
-    section.innerHTML = `
+    // Build HTML and insert into the existing section
+    const html = `
       <h3>${brand}</h3>
       <h2 class="divider">${name}</h2>
       <img class="divider" src="${image}" alt="${name}" />
@@ -72,6 +90,6 @@ export default class ProductDetails {
         <button id="addToCart" data-id="${id}">Add to Cart</button>
       </div>
     `;
-    main.appendChild(section);
+    productDetailSection.innerHTML = html;
   }
 }
