@@ -8,7 +8,7 @@ function renderCartContents() {
     document.querySelector(".product-list").innerHTML = `
       <li class="cart-empty">
         <p>Your cart is currently empty</p>
-        <a href="/" class="btn">Continue Shopping</a>
+        <a href="/product-listing/" class="btn">Continue Shopping</a>
       </li>
     `;
     // Cart footer is already hidden by default, so no need to add hide class
