@@ -2,8 +2,31 @@ import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 import { loadHeaderFooter } from "./utils.mjs";
 function renderCartContents() {
   const cartItems = getLocalStorage("so-cart") || [];
+  
+  // Check if cart is empty
+  if (cartItems.length === 0) {
+    document.querySelector(".product-list").innerHTML = `
+      <li class="cart-empty">
+        <p>Your cart is currently empty</p>
+        <a href="/" class="btn">Continue Shopping</a>
+      </li>
+    `;
+    // Cart footer is already hidden by default, so no need to add hide class
+    return;
+  }
+  
+  // Show cart footer when there are items by removing the hide class
+  document.querySelector(".cart-footer").classList.remove("hide");
+  
+  // Display cart items
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
   document.querySelector(".product-list").innerHTML = htmlItems.join("");
+  
+  // Calculate total
+  const total = cartItems.reduce((sum, item) => sum + parseFloat(item.FinalPrice), 0);
+  
+  // Display total
+  document.querySelector(".cart-total").innerHTML = `Total: $${total.toFixed(2)}`;
 
   // Attach event listeners to all remove buttons
   document.querySelectorAll(".remove-item").forEach((btn) => {

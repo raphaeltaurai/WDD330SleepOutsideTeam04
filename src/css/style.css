@@ -105,27 +105,285 @@ p {
   margin-top: -1.7em;
 }
 
-/* utility classes */
+/* Utility Classes */
 .highlight {
   color: var(--tertiary-color);
 }
 
-button {
-  padding: 0.5em 2em;
-  background-color: var(--secondary-color);
+/* Button Components */
+.btn {
+  display: inline-block;
+  padding: 0.75em 1.5em;
+  background-color: var(--primary-color);
   color: white;
-  margin: auto;
-  display: block;
-  border: 0;
-  font-size: var(--large-font);
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid var(--primary-color);
+  text-align: center;
+  margin: 1rem auto;
+
+  &:hover {
+    background-color: var(--tertiary-color);
+    border-color: var(--tertiary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Button Variants */
+  &.btn-secondary {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+
+    &:hover {
+      background-color: var(--dark-grey);
+      border-color: var(--dark-grey);
+    }
+  }
+
+  &.btn-outline {
+    background-color: transparent;
+    color: var(--primary-color);
+
+    &:hover {
+      background-color: var(--primary-color);
+      color: white;
+    }
+  }
+
+  &.btn-small {
+    padding: 0.5em 1em;
+    font-size: 0.9rem;
+  }
+
+  &.btn-large {
+    padding: 1em 2em;
+    font-size: 1.1rem;
+  }
 }
 
+/* Card Components */
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--light-grey);
+    background-color: #f8f9fa;
+
+    h3 {
+      margin: 0;
+      color: var(--dark-grey);
+    }
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .card-footer {
+    padding: 1rem;
+    border-top: 1px solid var(--light-grey);
+    background-color: #f8f9fa;
+  }
+}
+
+/* Empty State Components */
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid var(--light-grey);
+  margin: 1rem 0;
+
+  .empty-icon {
+    font-size: 3rem;
+    color: var(--light-grey);
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    color: var(--dark-grey);
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: var(--dark-grey);
+    margin-bottom: 1rem;
+    opacity: 0.8;
+  }
+
+  .btn {
+    margin: 0.5rem;
+  }
+}
+
+/* Cart Specific Components */
+.cart-empty {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid var(--light-grey);
+  margin: 1rem 0;
+
+  p {
+    font-size: 1.2rem;
+    color: var(--dark-grey);
+    margin-bottom: 1rem;
+  }
+}
+
+/* Form Components */
+.form-group {
+  margin-bottom: 1rem;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--dark-grey);
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--light-grey);
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(240, 168, 104, 0.2);
+    }
+
+    &:hover {
+      border-color: var(--primary-color);
+    }
+  }
+
+  &.form-group-inline {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    label {
+      margin-bottom: 0;
+      white-space: nowrap;
+    }
+
+    input, select {
+      width: auto;
+      flex: 1;
+    }
+  }
+}
+
+/* Alert Components */
+.alert {
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  border-left: 4px solid;
+
+  &.alert-success {
+    background-color: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+  }
+
+  &.alert-error {
+    background-color: #f8d7da;
+    border-color: #dc3545;
+    color: #721c24;
+  }
+
+  &.alert-warning {
+    background-color: #fff3cd;
+    border-color: #ffc107;
+    color: #856404;
+  }
+
+  &.alert-info {
+    background-color: #d1ecf1;
+    border-color: #17a2b8;
+    color: #0c5460;
+  }
+}
+
+/* Loading States */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+  position: relative;
+
+  &::after {
+    content: "Loading...";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.1rem;
+    color: var(--tertiary-color);
+    font-weight: 600;
+  }
+}
+
+/* Responsive Utilities */
+@media screen and (max-width: 768px) {
+  .btn {
+    &.btn-responsive {
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+  }
+
+  .card {
+    &.card-responsive {
+      margin: 0.5rem;
+    }
+  }
+
+  .form-group {
+    &.form-group-inline {
+      flex-direction: column;
+      align-items: stretch;
+
+      label {
+        margin-bottom: 0.5rem;
+      }
+
+      input, select {
+        width: 100%;
+      }
+    }
+  }
+}
+
+/* Additional Utility Classes */
 .divider {
   border-bottom: 2px solid var(--primary-color);
 }
-
-/* End utility classes */
 
 /* Cart icon styles */
 .cart {
