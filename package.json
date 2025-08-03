@@ -11,7 +11,7 @@
     "test": "jest",
     "preview": "vite preview"
   },
-  "author": "Shane Thompson",
+  "author": "Raphael Shawn Taurai",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.56.0",
