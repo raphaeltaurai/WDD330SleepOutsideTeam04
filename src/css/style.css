@@ -761,3 +761,233 @@ footer {
   font-size: var(--small-font);
   padding: 1em;
 }
+
+/* Checkout Page Styles */
+.checkout-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.checkout-container h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--dark-grey);
+  font-size: 2rem;
+}
+
+.checkout-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* Order Summary Styles */
+.order-summary {
+  background: #f8f9fa;
+  border: 1px solid var(--light-grey);
+  border-radius: 8px;
+  padding: 1.5rem;
+  position: sticky;
+  top: 2rem;
+}
+
+.order-summary h3 {
+  margin-bottom: 1rem;
+  color: var(--dark-grey);
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 0.5rem;
+}
+
+.cart-items-summary {
+  margin-bottom: 1.5rem;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.summary-item:last-child {
+  border-bottom: none;
+}
+
+.item-name {
+  font-weight: 500;
+  color: var(--dark-grey);
+  flex: 1;
+}
+
+.item-price {
+  font-weight: 600;
+  color: var(--secondary-color);
+}
+
+.order-totals {
+  border-top: 2px solid var(--light-grey);
+  padding-top: 1rem;
+}
+
+.total-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.total-line.total-final {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--secondary-color);
+  border-top: 2px solid var(--primary-color);
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+}
+
+/* Checkout Form Styles */
+.checkout-form {
+  background: white;
+  border: 1px solid var(--light-grey);
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+  margin-bottom: 2rem;
+}
+
+.form-section h3 {
+  margin-bottom: 1rem;
+  color: var(--dark-grey);
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 0.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--dark-grey);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid var(--light-grey);
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(240, 168, 104, 0.2);
+}
+
+.form-group input.error,
+.form-group select.error {
+  border-color: #dc3545;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--light-grey);
+}
+
+.checkout-btn {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  font-size: 1.1rem;
+  padding: 1rem 2rem;
+}
+
+.checkout-btn:hover {
+  background-color: var(--tertiary-color);
+  border-color: var(--tertiary-color);
+}
+
+.btn-secondary {
+  background-color: var(--light-grey);
+  border-color: var(--light-grey);
+  color: var(--dark-grey);
+}
+
+.btn-secondary:hover {
+  background-color: #c0c0c0;
+  border-color: #c0c0c0;
+  color: var(--dark-grey);
+}
+
+/* Responsive Design for Checkout */
+@media screen and (max-width: 768px) {
+  .checkout-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .order-summary {
+    position: static;
+    order: 2;
+  }
+  
+  .checkout-form {
+    order: 1;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .checkout-container {
+    padding: 1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .checkout-form {
+    padding: 1rem;
+  }
+  
+  .order-summary {
+    padding: 1rem;
+  }
+  
+  .form-group input,
+  .form-group select {
+    padding: 0.5rem;
+  }
+}

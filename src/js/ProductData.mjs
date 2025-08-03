@@ -22,7 +22,7 @@ export default class ProductData {
   async findProductById(id) {
     try {
       // Try to get the product by searching in all categories
-      const categories = ['tents', 'backpacks', 'sleeping-bags', 'hammocks'];
+      const categories = ["tents", "backpacks", "sleeping-bags", "hammocks"];
       
       for (const category of categories) {
         const response = await fetch(`${baseURL}products/search/${category}`);
