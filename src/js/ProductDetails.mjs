@@ -1,4 +1,4 @@
-import { setLocalStorage, getLocalStorage } from "./utils.mjs";
+import { setLocalStorage, getLocalStorage, alertMessage } from "./utils.mjs";
 
 export default class ProductDetails {
   constructor(productId, dataSource) {
@@ -34,7 +34,7 @@ export default class ProductDetails {
   addProductToCart() {
     // Validate that we have a valid product before adding to cart
     if (!this.product || !this.product.Id) {
-      alert("Error: Product information is not available. Please refresh the page and try again.");
+      alertMessage("Error: Product information is not available. Please refresh the page and try again.", false);
       return;
     }
     
@@ -44,8 +44,27 @@ export default class ProductDetails {
     }
     cartItems.push(this.product);
     setLocalStorage("so-cart", cartItems);
-    // Optionally, show feedback to the user
-    alert("Product added to cart!");
+    
+    // Show feedback to the user with success styling
+    const alertElement = document.createElement("div");
+    alertElement.classList.add("alert", "alert-success");
+    alertElement.innerHTML = `
+      <span class="alert-message">${this.product.Name} added to cart!</span>
+      <button class="alert-close" aria-label="Close alert">×</button>
+    `;
+    
+    // Add the alert to the top of main
+    const mainElement = document.querySelector("main");
+    mainElement.prepend(alertElement);
+    
+    // Add click listener to close the alert
+    alertElement.addEventListener("click", function(e) {
+      if (e.target.tagName === "BUTTON" || e.target.classList.contains("alert-close")) {
+        if (mainElement && mainElement.contains(this)) {
+          mainElement.removeChild(this);
+        }
+      }
+    });
   }
 
   renderProductDetails() {

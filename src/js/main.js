@@ -1,6 +1,6 @@
 
 import { loadHeaderFooter } from "./utils.mjs";
-import ProductData from "./ProductData.mjs";
+import ExternalServices from "./ExternalServices.mjs";
 import { renderListWithTemplate } from "./utils.mjs";
 
 loadHeaderFooter();
@@ -33,8 +33,8 @@ function productCardTemplate(product) {
 // Load top products for a category
 async function loadTopProducts(category, listElement, count = 4) {
   try {
-    const dataSource = new ProductData(category);
-    const products = await dataSource.getData();
+    const dataSource = new ExternalServices();
+    const products = await dataSource.getData(category);
     
     // Take the first 'count' products as top products
     const topProducts = products.slice(0, count);

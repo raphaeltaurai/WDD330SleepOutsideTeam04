@@ -1,14 +1,15 @@
 const baseURL = import.meta.env.VITE_SERVER_URL;
 
-function convertToJson(res) {
+async function convertToJson(res) {
+  const jsonResponse = await res.json();
   if (res.ok) {
-    return res.json();
+    return jsonResponse;
   } else {
-    throw new Error("Bad Response");
+    throw { name: "servicesError", message: jsonResponse };
   }
 }
 
-export default class ProductData {
+export default class ExternalServices {
   constructor() {
     // No category or path needed for API
   }
@@ -52,6 +53,24 @@ export default class ProductData {
     } catch (error) {
       console.error("Error fetching product:", error);
       throw new Error(`Failed to fetch product with ID ${id}: ${error.message}`);
+    }
+  }
+
+  async checkout(orderData) {
+    try {
+      const response = await fetch(`${baseURL}checkout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData)
+      });
+      
+      const data = await convertToJson(response);
+      return data;
+    } catch (error) {
+      console.error("Error submitting order:", error);
+      throw new Error(`Failed to submit order: ${error.message}`);
     }
   }
 }

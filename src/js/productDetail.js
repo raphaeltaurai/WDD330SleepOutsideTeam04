@@ -1,5 +1,5 @@
+import ExternalServices from "./ExternalServices.mjs";
 import { getParam, loadHeaderFooter } from "./utils.mjs";
-import ProductData from "./ProductData.mjs";
 import ProductDetails from "./ProductDetails.mjs";
 
 const productId = getParam("product");
@@ -20,7 +20,7 @@ if (!productId) {
   });
 } else {
   // Product ID provided, load product details
-  const dataSource = new ProductData();
+  const dataSource = new ExternalServices();
   const product = new ProductDetails(productId, dataSource);
   product.init(); 
 }

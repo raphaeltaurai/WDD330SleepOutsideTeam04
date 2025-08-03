@@ -48,15 +48,27 @@
           <form id="checkout-form" class="checkout-form">
             <div class="form-section">
               <h3>Shipping & Billing Address</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="fname">First Name *</label>
+                  <input type="text" id="fname" name="fname" value="John" required>
+                </div>
+                
+                <div class="form-group">
+                  <label for="lname">Last Name *</label>
+                  <input type="text" id="lname" name="lname" value="Doe" required>
+                </div>
+              </div>
+              
               <div class="form-group">
                 <label for="street-address">Street Address *</label>
-                <input type="text" id="street-address" name="street-address" required>
+                <input type="text" id="street-address" name="street" value="123 Main" required>
               </div>
               
               <div class="form-row">
                 <div class="form-group">
                   <label for="city">City *</label>
-                  <input type="text" id="city" name="city" required>
+                  <input type="text" id="city" name="city" value="Rexburg" required>
                 </div>
                 
                 <div class="form-group">
@@ -248,7 +260,7 @@
                     <option value="Ukraine">Ukraine</option>
                     <option value="United Arab Emirates">United Arab Emirates</option>
                     <option value="United Kingdom">United Kingdom</option>
-                    <option value="United States">United States</option>
+                    <option value="United States" selected>United States</option>
                     <option value="Uruguay">Uruguay</option>
                     <option value="Uzbekistan">Uzbekistan</option>
                     <option value="Vanuatu">Vanuatu</option>
@@ -264,7 +276,7 @@
               
               <div class="form-group">
                 <label for="zip-code">Zip Code *</label>
-                <input type="text" id="zip-code" name="zip-code" pattern="[0-9]{5}" placeholder="00000" maxlength="5" required>
+                <input type="text" id="zip-code" name="zip" value="83440" pattern="[0-9]{5}" maxlength="5" required>
               </div>
             </div>
 
@@ -272,18 +284,18 @@
               <h3>Payment Information</h3>
               <div class="form-group">
                 <label for="card-number">Credit Card Number *</label>
-                <input type="text" id="card-number" name="card-number" pattern="[0-9]{13,19}" maxlength="19" placeholder="1234 5678 9012 3456" required>
+                <input type="text" id="card-number" name="cardNumber" value="1234123412341234" pattern="[0-9]{13,19}" maxlength="19" placeholder="1234 5678 9012 3456" required>
               </div>
               
               <div class="form-row">
                 <div class="form-group">
                   <label for="expiration">Expiration Date *</label>
-                  <input type="text" id="expiration" name="expiration" pattern="(0[1-9]|1[0-2])\/[0-9]{2}" placeholder="MM/YY" maxlength="5" required>
+                  <input type="text" id="expiration" name="expiration" value="12/25" pattern="(0[1-9]|1[0-2])\/[0-9]{2}" placeholder="MM/YY" maxlength="5" required>
                 </div>
                 
                 <div class="form-group">
                   <label for="security-code">Security Code *</label>
-                  <input type="text" id="security-code" name="security-code" pattern="[0-9]{3,4}" maxlength="4" placeholder="123" required>
+                  <input type="text" id="security-code" name="code" value="123" pattern="[0-9]{3,4}" maxlength="4" placeholder="123" required>
                 </div>
               </div>
             </div>

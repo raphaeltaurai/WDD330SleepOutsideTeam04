@@ -1,5 +1,6 @@
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import { getLocalStorage, setLocalStorage, alertMessage } from "./utils.mjs";
 import { loadHeaderFooter } from "./utils.mjs";
+import CheckoutProcess from "./CheckoutProcess.mjs";
 
 // Initialize checkout page
 function initCheckout() {
@@ -30,32 +31,28 @@ function displayOrderSummary() {
   
   cartItemsContainer.innerHTML = itemsHTML;
 
-  // Calculate and display totals
-  calculateAndDisplayTotals(cartItems);
-}
-
-// Calculate and display order totals
-function calculateAndDisplayTotals(cartItems) {
-  const subtotal = cartItems.reduce((sum, item) => sum + parseFloat(item.FinalPrice), 0);
-  const tax = subtotal * 0.06; // 6% tax rate
-  const shipping = cartItems.length > 0 ? 10 + (cartItems.length - 1) * 2 : 0; // $10 for first item + $2 for each additional
-  const orderTotal = subtotal + tax + shipping;
-
-  document.getElementById("subtotal").textContent = `$${subtotal.toFixed(2)}`;
-  document.getElementById("tax").textContent = `$${tax.toFixed(2)}`;
-  document.getElementById("shipping").textContent = `$${shipping.toFixed(2)}`;
-  document.getElementById("order-total").textContent = `$${orderTotal.toFixed(2)}`;
+  // Initialize CheckoutProcess
+  const checkoutProcess = new CheckoutProcess("so-cart", ".order-summary");
+  checkoutProcess.init();
+  checkoutProcess.calculateOrderTotal();
+  
+  // Store checkout process instance for later use
+  window.checkoutProcess = checkoutProcess;
 }
 
 // Setup form validation
 function setupFormValidation() {
   const form = document.getElementById("checkout-form");
   
-  form.addEventListener("submit", function(e) {
+  form.addEventListener("submit", async function(e) {
     e.preventDefault();
     
-    if (validateForm()) {
-      processOrder();
+    // Check form validity
+    const chk_status = form.checkValidity();
+    form.reportValidity();
+    
+    if (chk_status) {
+      await processOrder();
     }
   });
 }
@@ -63,13 +60,15 @@ function setupFormValidation() {
 // Validate all form fields
 function validateForm() {
   const requiredFields = [
-    "street-address",
+    "fname",
+    "lname",
+    "street",
     "city", 
     "state",
-    "zip-code",
-    "card-number",
+    "zip",
+    "cardNumber",
     "expiration",
-    "security-code"
+    "code"
   ];
 
   let isValid = true;
@@ -96,14 +95,14 @@ function validateField(fieldId, value) {
   const field = document.getElementById(fieldId);
   
   switch (fieldId) {
-    case "zip-code":
+    case "zip":
       if (!/^\d{5}$/.test(value)) {
         showFieldError(field, "Please enter a valid 5-digit zip code");
         return false;
       }
       break;
       
-    case "card-number":
+    case "cardNumber":
       if (!/^\d{13,19}$/.test(value.replace(/\s/g, ""))) {
         showFieldError(field, "Please enter a valid credit card number");
         return false;
@@ -117,7 +116,7 @@ function validateField(fieldId, value) {
       }
       break;
       
-    case "security-code":
+    case "code":
       if (!/^\d{3,4}$/.test(value)) {
         showFieldError(field, "Please enter a valid security code");
         return false;
@@ -151,7 +150,7 @@ function clearFieldError(field) {
 // Setup input formatting
 function setupInputFormatting() {
   // Format credit card number with spaces
-  const cardNumber = document.getElementById("card-number");
+  const cardNumber = document.getElementById("cardNumber");
   cardNumber.addEventListener("input", function(e) {
     let value = e.target.value.replace(/\s/g, "");
     value = value.replace(/(\d{4})/g, "$1 ").trim();
@@ -169,38 +168,52 @@ function setupInputFormatting() {
   });
 
   // Only allow numbers in security code
-  const securityCode = document.getElementById("security-code");
+  const securityCode = document.getElementById("code");
   securityCode.addEventListener("input", function(e) {
     e.target.value = e.target.value.replace(/\D/g, "");
   });
 
   // Only allow numbers in zip code
-  const zipCode = document.getElementById("zip-code");
+  const zipCode = document.getElementById("zip");
   zipCode.addEventListener("input", function(e) {
     e.target.value = e.target.value.replace(/\D/g, "");
   });
 }
 
 // Process the order
-function processOrder() {
+async function processOrder() {
   const cartItems = getLocalStorage("so-cart") || [];
   
   if (cartItems.length === 0) {
-    alert("Your cart is empty!");
+    alertMessage("Your cart is empty!", true);
     return;
   }
 
-  // In a real application, you would send the order to a server
-  // For this demo, we'll just clear the cart and show a success message
-  
-  // Clear the cart
-  setLocalStorage("so-cart", []);
-  
-  // Show success message
-  alert("Order placed successfully! Thank you for your purchase.");
-  
-  // Redirect to home page
-  window.location.href = "/index.html";
+  try {
+    // Get the form element
+    const form = document.getElementById("checkout-form");
+    
+    // Use CheckoutProcess to handle the checkout
+    const checkoutProcess = window.checkoutProcess;
+    const result = await checkoutProcess.checkout(form);
+    
+    // Clear the cart
+    setLocalStorage("so-cart", []);
+    
+    // Redirect to success page
+    window.location.href = "/cart/success.html";
+  } catch (error) {
+    console.error("Error processing order:", error);
+    
+    // Handle the custom error object from ExternalServices
+    if (error.name === "servicesError") {
+      // Display the detailed error message from the server
+      const errorMessage = error.message.error || error.message.message || "Server error occurred";
+      alertMessage(`Order failed: ${errorMessage}`, true);
+    } else {
+      alertMessage(`There was an error processing your order: ${error.message}`, true);
+    }
+  }
 }
 
 // Initialize when DOM is loaded
