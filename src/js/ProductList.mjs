@@ -1,43 +1,66 @@
-import { renderListWithTemplate } from "./utils.mjs";
+import { renderListWithTemplate, fetchHousePictures } from "./utils.mjs";
 
-function productCardTemplate(product) {
-  // Handle different image structures
+function houseCardTemplate(house) {
+  // Use the first image as the main image
   let imageSrc = "";
-  if (product.Image) {
-    // Tents and hammocks have simple Image field
-    // Extract the subfolder and filename from the path
-    const pathParts = product.Image.split("/");
-    const subfolder = pathParts[pathParts.length - 2]; // tents or hammocks
-    const filename = pathParts[pathParts.length - 1]; // the actual filename
-    imageSrc = `../images/${subfolder}/${filename}`;
-  } else if (product.Images && product.Images.PrimaryLarge) {
-    // Backpacks and sleeping-bags have Images.PrimaryLarge
-    imageSrc = product.Images.PrimaryLarge;
+  if (Array.isArray(house.images) && house.images.length > 0) {
+    imageSrc = house.images[0];
   }
+  // fallback placeholder
+  if (!imageSrc) imageSrc = "https://via.placeholder.com/400x300?text=No+Image";
 
-  return `<li class="product-card">
-    <a href="/product_pages/?product=${product.Id}">
-      <img src="${imageSrc}" alt="${product.Name}">
-      <h3 class="card__brand">${product.Brand?.Name || ""}</h3>
-      <h2 class="card__name">${product.NameWithoutBrand || product.Name}</h2>
-      <p class="product-card__price">$${product.FinalPrice?.toFixed(2) || ""}</p>
+  // Address, price, and status (to rent/to buy)
+  const address = house.address || "";
+  const price = house.price ? `$${house.price.toLocaleString()}` : "";
+  const status = house.status ? house.status.charAt(0).toUpperCase() + house.status.slice(1) : "";
+
+  return `<li class="house-card">
+    <a href="/product_pages/?house=${house.id}">
+      <img src="${imageSrc}" alt="House image">
+      <div class="card-content">
+        <h2 class="card__address">${address}</h2>
+        <p class="house-card__price">${price}</p>
+        <span class="house-card__status">${status}</span>
+      </div>
     </a>
   </li>`;
 }
 
-export default class ProductList {
-  constructor(category, dataSource, listElement) {
-    this.category = category;
+export default class HouseList {
+  constructor(status, dataSource, listElement) {
+    this.status = status; // 'to rent' or 'to buy'
     this.dataSource = dataSource;
     this.listElement = listElement;
   }
 
+
   async init() {
-    const list = await this.dataSource.getData();
+    // Fetch houses by status
+    let list = await this.dataSource.getHousesByStatus(this.status);
+    // Normalize fields for rendering
+    list = list.map(house => ({
+      id: house.Id || house.id,
+      name: house.Name || house.name,
+      address: house.address,
+      price: house.FinalPrice || house.price,
+      status: house.status,
+      description: house.description,
+      images: [],
+    }));
+    // Fetch Unsplash images and assign to houses
+    try {
+      const unsplashImages = await fetchHousePictures(list.length);
+      list = list.map((house, idx) => {
+        const img = unsplashImages[idx]?.urls?.regular || unsplashImages[idx]?.urls?.small;
+        return { ...house, images: img ? [img] : house.images };
+      });
+    } catch (e) {
+      // If Unsplash fails, fallback to placeholder (handled in template)
+    }
     this.renderList(list);
   }
 
   renderList(list) {
-    renderListWithTemplate(productCardTemplate, this.listElement, list, "afterbegin", true);
+    renderListWithTemplate(houseCardTemplate, this.listElement, list, "afterbegin", true);
   }
 } 

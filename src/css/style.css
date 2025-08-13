@@ -1,13 +1,15 @@
 :root {
-  --font-body: Arial, Helvetica, sans-serif;
-  --font-headline: Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  /* colors */
-  --primary-color: #f0a868;
-  --secondary-color: #525b0f;
-  --tertiary-color: #8a470c;
-  --light-grey: #d0d0d0;
-  --dark-grey: #303030;
-
+  --font-body: 'Segoe UI', Arial, Helvetica, sans-serif;
+  --font-headline: 'Montserrat', Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  /* new colors for real estate */
+  --primary-color: #2a9d8f;
+  --secondary-color: #264653;
+  --tertiary-color: #e9c46a;
+  --accent-color: #f4a261;
+  --light-grey: #f1f1f1;
+  --dark-grey: #22223b;
+  --success-color: #43aa8b;
+  --danger-color: #e63946;
   /* sizes */
   --font-base: 18px;
   --small-font: 0.8em;
@@ -24,6 +26,7 @@ body {
   font-family: var(--font-body);
   font-size: var(--font-base);
   color: var(--dark-grey);
+  background: #f8fafc;
 }
 
 img {
@@ -48,6 +51,7 @@ p {
   font-size: 30px;
   text-align: right;
   font-family: var(--font-headline);
+  color: var(--primary-color);
 }
 
 .logo img {
@@ -264,7 +268,8 @@ button {
 
 .categories h2 {
   margin-bottom: 2rem;
-  color: var(--dark-grey);
+  color: var(--primary-color);
+  font-family: var(--font-headline);
 }
 
 .category-grid {
@@ -280,18 +285,18 @@ button {
   flex-direction: column;
   align-items: center;
   padding: 2rem;
-  border: 2px solid var(--light-grey);
+  border: 2px solid var(--primary-color);
   border-radius: 8px;
   text-decoration: none;
   color: var(--dark-grey);
   transition: all 0.3s ease;
-  background-color: white;
+  background: #fff;
 }
 
 .category-card:hover {
-  border-color: var(--dark-grey);
+  border-color: var(--accent-color);
   transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(42, 157, 143, 0.12);
 }
 
 .category-card img {
@@ -1358,5 +1363,120 @@ button {
     font-size: 1.25rem;
     width: 20px;
     height: 20px;
+  }
+}
+
+/* House List & Card Styles */
+.house-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+}
+.house-card {
+  background: #fff;
+  border: 1.5px solid var(--light-grey);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(42, 157, 143, 0.07);
+  max-width: 340px;
+  min-width: 260px;
+  padding: 1.5rem 1rem 1rem 1rem;
+  transition: box-shadow 0.2s, border 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.house-card:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 24px rgba(42, 157, 143, 0.18);
+}
+.house-card img {
+  width: 100%;
+  max-width: 300px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+.card-content {
+  width: 100%;
+  text-align: left;
+}
+.card__address {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--secondary-color);
+  margin-bottom: 0.5rem;
+}
+.house-card__price {
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.house-card__status {
+  display: inline-block;
+  background: var(--tertiary-color);
+  color: var(--secondary-color);
+  font-size: 0.95em;
+  font-weight: 600;
+  padding: 0.2em 0.8em;
+  border-radius: 16px;
+  margin-bottom: 0.5rem;
+}
+
+/* House Gallery */
+.house-gallery {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+.house-gallery img {
+  width: 120px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid var(--light-grey);
+}
+
+.house-owner, .house-reviews {
+  background: #f6f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+.house-owner h4 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+.house-reviews h4 {
+  color: var(--secondary-color);
+  margin-bottom: 0.5rem;
+}
+.review {
+  border-bottom: 1px solid var(--light-grey);
+  padding: 0.5rem 0;
+  font-size: 0.98em;
+}
+.review:last-child {
+  border-bottom: none;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .house-list {
+    flex-direction: column;
+    align-items: center;
+  }
+  .house-card {
+    min-width: 90vw;
+    max-width: 98vw;
+  }
+  .house-gallery {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }

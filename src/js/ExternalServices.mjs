@@ -1,5 +1,10 @@
 const baseURL = import.meta.env.VITE_SERVER_URL;
 
+// Helper to detect if we should use local JSON
+function useLocalJson() {
+  return !baseURL || baseURL === "undefined";
+}
+
 async function convertToJson(res) {
   const jsonResponse = await res.json();
   if (res.ok) {
@@ -10,67 +15,54 @@ async function convertToJson(res) {
 }
 
 export default class ExternalServices {
-  constructor() {
-    // No category or path needed for API
-  }
-  
-  async getData(category) {
-    const response = await fetch(`${baseURL}products/search/${category}`);
-    const data = await convertToJson(response);
-    return data.Result;
-  }
-  
-  async findProductById(id) {
-    try {
-      // Try to get the product by searching in all categories
-      const categories = ["tents", "backpacks", "sleeping-bags", "hammocks"];
-      
-      for (const category of categories) {
-        const response = await fetch(`${baseURL}products/search/${category}`);
-        if (!response.ok) {
-          continue; // Try next category
-        }
-        const data = await convertToJson(response);
-        
-        // Handle different response structures
-        let products = [];
-        if (data.Result) {
-          products = data.Result;
-        } else if (data.data) {
-          products = data.data;
-        } else if (Array.isArray(data)) {
-          products = data;
-        }
-        
-        // Find the product with matching ID
-        const product = products.find(p => p.Id === id || p.id === id);
-        if (product) {
-          return product;
-        }
-      }
-      
-      throw new Error(`Product with ID ${id} not found in any category`);
-    } catch (error) {
-      console.error("Error fetching product:", error);
-      throw new Error(`Failed to fetch product with ID ${id}: ${error.message}`);
+  constructor() {}
+
+  // Fetch all houses (now using /products endpoint)
+  async getAllHouses() {
+    if (useLocalJson()) {
+      const response = await fetch("/json/houses.json");
+      return await response.json();
+    } else {
+      const response = await fetch(`${baseURL}products`);
+      const data = await convertToJson(response);
+      return data;
     }
   }
 
-  async checkout(orderData) {
-    try {
-      const response = await fetch(`${baseURL}checkout`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderData)
-      });
-      
-      const data = await convertToJson(response);
-      return data;
-    } catch (error) {
-      console.error("Error submitting order:", error);
-      throw new Error(`Failed to submit order: ${error.message}`);
-    }
+  // Fetch houses by status (to rent or to buy)
+  async getHousesByStatus(status) {
+    // If the API provides a way to filter by status, use it. Otherwise, filter client-side.
+    const allHouses = await this.getAllHouses();
+    if (!status) return allHouses;
+    // Assume status is a property like 'for_rent' or 'for_sale' on the house object
+    return allHouses.filter(house => house.status && house.status.toLowerCase() === status.toLowerCase());
+  }
+
+  // Fetch house by ID (now using /products endpoint)
+  async findHouseById(id) {
+    const response = await fetch(`${baseURL}products/${id}`);
+    const data = await convertToJson(response);
+    return data;
+  }
+
+  // Fetch houses in a place (optional, for future use, using /products endpoint as placeholder)
+  async getHousesByPlace(placeId) {
+    const response = await fetch(`${baseURL}products?placeId=${placeId}`);
+    const data = await convertToJson(response);
+    return data;
+  }
+
+  // Fetch house owner info (optional, for detail page, using /products endpoint as placeholder)
+  async getHouseOwner(id) {
+    const response = await fetch(`${baseURL}products/${id}/owners`);
+    const data = await convertToJson(response);
+    return data;
+  }
+
+  // Fetch house reviews (optional, for detail page, using /products endpoint as placeholder)
+  async getHouseReviews(id) {
+    const response = await fetch(`${baseURL}products/${id}/reviews`);
+    const data = await convertToJson(response);
+    return data;
   }
 }

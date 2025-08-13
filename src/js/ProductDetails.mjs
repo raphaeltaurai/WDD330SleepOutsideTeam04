@@ -1,29 +1,38 @@
-import { setLocalStorage, getLocalStorage, alertMessage } from "./utils.mjs";
+import { alertMessage } from "./utils.mjs";
 
-export default class ProductDetails {
-  constructor(productId, dataSource) {
-    this.productId = productId;
-    this.product = {};
+const UNSPLASH_FALLBACKS = [
+  "https://source.unsplash.com/400x300/?modern,house,exterior",
+  "https://source.unsplash.com/400x300/?home,architecture,realestate",
+  "https://source.unsplash.com/400x300/?house,property,exterior",
+  "https://source.unsplash.com/400x300/?villa,home,modern"
+];
+
+export default class HouseDetails {
+  constructor(houseId, dataSource) {
+    this.houseId = houseId;
+    this.house = {};
     this.dataSource = dataSource;
   }
 
   async init() {
     try {
-      this.product = await this.dataSource.findProductById(this.productId);
-      this.renderProductDetails();
-      // Add event listener to Add to Cart button after rendering
-      const addToCartBtn = document.getElementById("addToCart");
-      if (addToCartBtn) {
-        addToCartBtn.addEventListener("click", this.addProductToCart.bind(this));
+      this.house = await this.dataSource.findHouseById(this.houseId);
+      this.owner = await this.dataSource.getHouseOwner(this.houseId);
+      this.reviews = await this.dataSource.getHouseReviews(this.houseId);
+      this.renderHouseDetails();
+      // Add event listener to Contact Agent button
+      const contactBtn = document.getElementById("contactAgent");
+      if (contactBtn) {
+        contactBtn.addEventListener("click", this.contactAgent.bind(this));
       }
     } catch (error) {
-      console.error("Error loading product details:", error);
-      const productDetailSection = document.querySelector("#product-detail");
-      if (productDetailSection) {
-        productDetailSection.innerHTML = `
+      console.error("Error loading house details:", error);
+      const houseDetailSection = document.querySelector("#product-detail");
+      if (houseDetailSection) {
+        houseDetailSection.innerHTML = `
           <div class="error-message">
-            <h3>Error Loading Product</h3>
-            <p>Sorry, we couldn't load the product details. Please try again later.</p>
+            <h3>Error Loading House</h3>
+            <p>Sorry, we couldn't load the house details. Please try again later.</p>
             <p>Error: ${error.message}</p>
           </div>
         `;
@@ -31,84 +40,55 @@ export default class ProductDetails {
     }
   }
 
-  addProductToCart() {
-    // Validate that we have a valid product before adding to cart
-    if (!this.product || !this.product.Id) {
-      alertMessage("Error: Product information is not available. Please refresh the page and try again.", false);
-      return;
-    }
-    
-    let cartItems = getLocalStorage("so-cart");
-    if (!Array.isArray(cartItems)) {
-      cartItems = [];
-    }
-    cartItems.push(this.product);
-    setLocalStorage("so-cart", cartItems);
-    
-    // Show feedback to the user with success styling
-    const alertElement = document.createElement("div");
-    alertElement.classList.add("alert", "alert-success");
-    alertElement.innerHTML = `
-      <span class="alert-message">${this.product.Name} added to cart!</span>
-      <button class="alert-close" aria-label="Close alert">×</button>
-    `;
-    
-    // Add the alert to the top of main
-    const mainElement = document.querySelector("main");
-    mainElement.prepend(alertElement);
-    
-    // Add click listener to close the alert
-    alertElement.addEventListener("click", function(e) {
-      if (e.target.tagName === "BUTTON" || e.target.classList.contains("alert-close")) {
-        if (mainElement && mainElement.contains(this)) {
-          mainElement.removeChild(this);
-        }
-      }
-    });
+  contactAgent() {
+    alertMessage("Contact form or agent details would appear here.");
   }
 
-  renderProductDetails() {
-    // Find the existing product-detail section
-    const productDetailSection = document.querySelector("#product-detail");
-    if (!productDetailSection) {
-      console.error("Product detail section not found");
+  renderHouseDetails() {
+    const houseDetailSection = document.querySelector("#product-detail");
+    if (!houseDetailSection) {
+      console.error("House detail section not found");
       return;
     }
 
-    // Prepare product data
-    const brand = this.product.Brand?.Name || "";
-    const name = this.product.NameWithoutBrand || this.product.Name || "";
-    
-    // Handle different image structures for API data
-    let image = "";
-    if (this.product.Images && this.product.Images.PrimaryLarge) {
-      // Use PrimaryLarge for product details
-      image = this.product.Images.PrimaryLarge;
-    } else if (this.product.Image) {
-      // Fallback for local data structure - fix the path
-      const pathParts = this.product.Image.split("/");
-      const subfolder = pathParts[pathParts.length - 2];
-      const filename = pathParts[pathParts.length - 1];
-      image = `/images/${subfolder}/${filename}`;
-    }
-    
-    const price = this.product.FinalPrice ? `$${this.product.FinalPrice.toFixed(2)}` : "";
-    const color = this.product.Colors && this.product.Colors[0]?.ColorName ? this.product.Colors[0].ColorName : "";
-    const description = this.product.DescriptionHtmlSimple || "";
-    const id = this.product.Id || "";
+    // Gallery of images (with Unsplash fallback)
+    let galleryHtml = "";
+    let images = Array.isArray(this.house.images) && this.house.images.length > 0 ? this.house.images : UNSPLASH_FALLBACKS;
+    galleryHtml = `<div class='house-gallery'>` +
+      images.map(img => `<img src='${img}' alt='House image' />`).join("") +
+      `</div>`;
 
-    // Build HTML and insert into the existing section
+    const address = this.house.address || "";
+    const price = this.house.price ? `$${this.house.price.toLocaleString()}` : "";
+    const status = this.house.status ? this.house.status.charAt(0).toUpperCase() + this.house.status.slice(1) : "";
+    const description = this.house.description || "";
+    const ownerName = this.owner && this.owner.length > 0 ? this.owner[0].name : "";
+    const ownerContact = this.owner && this.owner.length > 0 ? this.owner[0].contact : "";
+
+    // Reviews
+    let reviewsHtml = "";
+    if (Array.isArray(this.reviews) && this.reviews.length > 0) {
+      reviewsHtml = `<div class='house-reviews'><h4>Reviews</h4>` +
+        this.reviews.map(r => `<div class='review'><strong>${r.user}</strong>: ${r.comment}</div>`).join("") +
+        `</div>`;
+    }
+
     const html = `
-      <h3>${brand}</h3>
-      <h2 class="divider">${name}</h2>
-      <img class="divider" src="${image}" alt="${name}" />
-      <p class="product-card__price">${price}</p>
-      <p class="product__color">${color}</p>
-      <p class="product__description">${description}</p>
-      <div class="product-detail__add">
-        <button id="addToCart" data-id="${id}">Add to Cart</button>
+      <h2 class="divider">${address}</h2>
+      ${galleryHtml}
+      <p class="house-card__price">${price}</p>
+      <span class="house-card__status">${status}</span>
+      <p class="house__description">${description}</p>
+      <div class="house-owner">
+        <h4>Owner Info</h4>
+        <p>${ownerName ? `Name: ${ownerName}` : ""}</p>
+        <p>${ownerContact ? `Contact: ${ownerContact}` : ""}</p>
+      </div>
+      ${reviewsHtml}
+      <div class="house-detail__contact">
+        <button id="contactAgent" data-id="${this.houseId}">Contact Agent</button>
       </div>
     `;
-    productDetailSection.innerHTML = html;
+    houseDetailSection.innerHTML = html;
   }
 }

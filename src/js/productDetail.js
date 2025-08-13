@@ -1,28 +1,26 @@
 import ExternalServices from "./ExternalServices.mjs";
 import { getParam, loadHeaderFooter } from "./utils.mjs";
-import ProductDetails from "./ProductDetails.mjs";
+import HouseDetails from "./ProductDetails.mjs";
 
-const productId = getParam("product");
+const houseId = getParam("house");
 
-if (!productId) {
-  // No product ID provided, show error message
+if (!houseId) {
   document.addEventListener("DOMContentLoaded", () => {
-    const productDetailSection = document.querySelector("#product-detail");
-    if (productDetailSection) {
-      productDetailSection.innerHTML = `
+    const houseDetailSection = document.querySelector("#product-detail");
+    if (houseDetailSection) {
+      houseDetailSection.innerHTML = `
         <div class="error-message">
-          <h3>No Product Selected</h3>
-          <p>Please select a product from the product listing to view its details.</p>
-          <a href="/product-listing/index.html" class="btn">Browse Products</a>
+          <h3>No House Selected</h3>
+          <p>Please select a house from the listing to view its details.</p>
+          <a href="/product-listing/index.html" class="btn">Browse Houses</a>
         </div>
       `;
     }
   });
 } else {
-  // Product ID provided, load product details
   const dataSource = new ExternalServices();
-  const product = new ProductDetails(productId, dataSource);
-  product.init(); 
+  const house = new HouseDetails(houseId, dataSource);
+  house.init();
 }
 
 loadHeaderFooter();

@@ -1,0 +1,50 @@
+[
+  {
+    "Id": 1,
+    "Name": "Modern Family Home",
+    "NameWithoutBrand": "Modern Family Home",
+    "Brand": { "Name": "DreamHomes" },
+    "Image": "house1.jpg",
+    "FinalPrice": 250000,
+    "status": "to buy",
+    "address": "123 Main St, Harare",
+    "description": "Spacious 4-bedroom home with garden.",
+    "Reviews": { "AverageRating": 4.7, "ReviewCount": 12 }
+  },
+  {
+    "Id": 2,
+    "Name": "Luxury Villa",
+    "NameWithoutBrand": "Luxury Villa",
+    "Brand": { "Name": "Elite Estates" },
+    "Image": "house2.jpg",
+    "FinalPrice": 500000,
+    "status": "to buy",
+    "address": "456 Elm Ave, Bulawayo",
+    "description": "5-bedroom villa with pool and garage.",
+    "Reviews": { "AverageRating": 4.9, "ReviewCount": 8 }
+  },
+  {
+    "Id": 3,
+    "Name": "Starter Apartment",
+    "NameWithoutBrand": "Starter Apartment",
+    "Brand": { "Name": "UrbanLiving" },
+    "Image": "house3.jpg",
+    "FinalPrice": 80000,
+    "status": "to buy",
+    "address": "789 Oak Rd, Gweru",
+    "description": "Affordable 2-bedroom apartment downtown.",
+    "Reviews": { "AverageRating": 4.2, "ReviewCount": 5 }
+  },
+  {
+    "Id": 4,
+    "Name": "Country Cottage",
+    "NameWithoutBrand": "Country Cottage",
+    "Brand": { "Name": "NatureHomes" },
+    "Image": "house4.jpg",
+    "FinalPrice": 120000,
+    "status": "to buy",
+    "address": "321 Pine Ln, Mutare",
+    "description": "Charming cottage with mountain views.",
+    "Reviews": { "AverageRating": 4.5, "ReviewCount": 7 }
+  }
+]
