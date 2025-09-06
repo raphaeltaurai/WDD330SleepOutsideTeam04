@@ -1,3 +1,16 @@
+// Fetch house pictures from Unsplash API
+export async function fetchHousePictures(count = 10) {
+  const accessKey = "kknvKrY8lNmAe2R-kW1u6W7b936TpXM5xEOcR-5ng44";
+  const url = `https://api.unsplash.com/search/photos?query=house&per_page=${count}`;
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Client-ID ${accessKey}`
+    }
+  });
+  if (!response.ok) throw new Error("Failed to fetch images from Unsplash");
+  const data = await response.json();
+  return data.results;
+}
 // wrapper for querySelector...returns matching element
 export function qs(selector, parent = document) {
   return parent.querySelector(selector);
